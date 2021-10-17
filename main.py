@@ -1,21 +1,10 @@
-import os
-import re
-import discord
 from keep_alive import keep_alive
+from responses import responses
+import discord
+import os
 
 client = discord.Client()
 bot_token = os.environ['TOKEN']
-
-def options(selected):
-  choices = {'$help': display_help(), '$hola': 1}
-  result = choices.get(selected, 'default')
-  return result
-
-def purge_messages():
-  x = 0
-
-def display_help():
-  print(f'bonito esta python')
 
 @client.event
 async def on_ready():
@@ -28,10 +17,11 @@ async def on_message(message):
 
   if message.content.startswith('$'):
     word_list = message.content.split()
-    result = options(word_list[0])
+    choices = {'$help': 1, '$hello': 2}
+    result = choices.get(word_list[0], 'default')
 
+    await message.channel.send(responses.get(result, 'default'))
 
-    #await message.channel.send(result)
 
 keep_alive()
 client.run(bot_token)
